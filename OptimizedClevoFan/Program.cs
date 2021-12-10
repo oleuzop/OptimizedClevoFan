@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace SystemTrayApp
+namespace OptimizedClevoFan
 {
     static class Program
     {

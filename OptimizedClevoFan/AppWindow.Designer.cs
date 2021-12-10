@@ -1,4 +1,4 @@
-﻿namespace SystemTrayApp
+﻿namespace OptimizedClevoFan
 {
     partial class AppWindow
     {

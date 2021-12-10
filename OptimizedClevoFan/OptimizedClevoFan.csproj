@@ -7,8 +7,8 @@
     <ProjectGuid>{5DFDB459-D341-45B2-AFF5-E878806EC2F1}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SystemTrayApp</RootNamespace>
-    <AssemblyName>SystemTrayApp</AssemblyName>
+    <RootNamespace>OptimizedClevoFan</RootNamespace>
+    <AssemblyName>OptimizedClevoFan</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -56,6 +56,10 @@
     <Compile Include="AppWindow.Designer.cs">
       <DependentUpon>AppWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="ClevoEcInfo.cs" />
+    <Compile Include="FanControl.cs" />
+    <Compile Include="IFanControl.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AppWindow.resx">

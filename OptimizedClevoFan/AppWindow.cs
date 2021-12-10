@@ -14,6 +14,10 @@ namespace OptimizedClevoFan
     {
         private Timer timer;
 
+        private IFanControl fanControl;
+
+        private List<FanControl> fans;
+
         public AppWindow()
         {
             InitializeComponent();
@@ -41,28 +45,57 @@ namespace OptimizedClevoFan
             timer.Start();
 
             // Create interface to communicate with fans & CPU temps
+            fanControl = new ClevoEcInfo();
+
+            fans = new List<FanControl>();
+
+            // 0   1   2   3   4   5   6   7   8   9  10  11  12  13  14   15  16
+            // 0   5  10  15  20  25  30  35  40  45  50  55  60  65  70   75  80
+            int[] temps1 = new int[] { 25, 25, 25, 25, 25, 25, 35, 40, 40, 40, 50, 60, 70, 80, 90, 100, 100 };
+            FanControl fanControl1 = new FanControl(fanControl, 1);
+            fanControl1.LoadTemps(temps1);
+            fans.Add(fanControl1);
+
+            // 0   1   2   3   4   5   6   7   8   9  10  11  12  13   14   15   16
+            // 0   5  10  15  20  25  30  35  40  45  50  55  60  65   70   75   80
+            int[] temps2 = new int[] { 25, 25, 25, 25, 35, 35, 35, 35, 40, 50, 60, 70, 80, 90, 100, 100, 100 };
+            FanControl fanControl2 = new FanControl(fanControl, 2);
+            fanControl2.LoadTemps(temps2);
+            fans.Add(fanControl2);
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////
         }
 
         public void CheckFansTick(object sender, EventArgs e)
         {
             if (sender == timer)
             {
-                // do something here
-                int i = 10 + 3;
-                i = i + 2;
+                const int OFFSET = 25;
+
+                int maxOfAllFans = 0;
+                foreach (FanControl fan in this.fans)
+                {
+                    fan.UpdateTemp();
+                    fan.CalculateFanRPM(OFFSET);
+                    maxOfAllFans = Math.Max(maxOfAllFans, fan.GetCalculatedFanRPM());
+                }
+
+                // if one of the fans is at more than 100% then I set all the fans at 100%
+                int minimumFanRPM = (int)((double)maxOfAllFans * 0.80);
+                if (maxOfAllFans >= 100)
+                    minimumFanRPM = 100;
+
+                foreach (FanControl fan in this.fans)
+                    fan.SetFanRPM(minimumFanRPM);
             }
         }
 
         private void SystemTrayIconDoubleClick(object sender, MouseEventArgs e)
         {
             if (this.Visible)
-            {
                 this.Hide();
-            }
             else
-            {
                 this.Show();
-            }
         }
 
         private void ContextMenuExit(object sender, EventArgs e)
@@ -71,6 +104,8 @@ namespace OptimizedClevoFan
             timer.Stop();
 
             // Set default fan RPMs
+            foreach (FanControl fan in this.fans)
+                fanControl.SetFansAuto(fan.GetFanNumber());
 
             // Delete interface for communicating with fans & CPU temps
 

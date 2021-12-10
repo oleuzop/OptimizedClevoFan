@@ -15,8 +15,8 @@ namespace OptimizedClevoFan
         private int desired_fan_rpm;
 
         private int NUMBER_OF_COUNTS = 4;
-        private double DECREMENT_STEP = 0.1;
-        private int DEGREE_STEPS = 5;
+        private double DECREMENT_STEP = 0.05;
+        private int STEP_SIZE_IN_DEGREE_CELSIUS = 5;
 
         public FanControl(IFanControl fan, int fanNumber)
         {
@@ -28,6 +28,7 @@ namespace OptimizedClevoFan
             this.last_temp = 40.0;
             this.cpu_temp = (int)this.last_temp;
         }
+        public int GetFanNumber() { return fanNumber; }
 
         public void LoadTemps(int[] temps)
         {
@@ -72,13 +73,13 @@ namespace OptimizedClevoFan
             // ----------------------------------------------------------------------------------------------------
             // Ramp calculation
 
-            int vec_value_low = this.cpu_temp / this.DEGREE_STEPS;
+            int vec_value_low = this.cpu_temp / this.STEP_SIZE_IN_DEGREE_CELSIUS;
             if (vec_value_low >= temps.Length)
                 vec_value_low = temps.Length - 1;
             if (vec_value_low < 0)
                 vec_value_low = 0;
 
-            int vec_value_high = (this.cpu_temp / this.DEGREE_STEPS) + 1;
+            int vec_value_high = (this.cpu_temp / this.STEP_SIZE_IN_DEGREE_CELSIUS) + 1;
             if (vec_value_high >= temps.Length)
                 vec_value_high = temps.Length - 1;
             if (vec_value_high < 0)
@@ -87,8 +88,8 @@ namespace OptimizedClevoFan
             int temp_low = temps[vec_value_low];
             int temp_high = temps[vec_value_high];
 
-            int extra_degrees = this.cpu_temp % this.DEGREE_STEPS;
-            double diff = (double)extra_degrees / (double)this.DEGREE_STEPS;
+            int extra_degrees = this.cpu_temp % this.STEP_SIZE_IN_DEGREE_CELSIUS;
+            double diff = (double)extra_degrees / (double)this.STEP_SIZE_IN_DEGREE_CELSIUS;
             diff *= (double)(temp_high - temp_low);
 
             this.desired_fan_rpm = temps[vec_value_low] + (int)diff;

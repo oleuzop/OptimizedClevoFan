@@ -57,10 +57,10 @@ namespace OptimizedClevoFan
         }
 
         public void Dispose() {
-            setFanDutyAuto(0);
-            setFanDutyAuto(1);
-            setFanDutyAuto(2);
-            setFanDutyAuto(3);
+            this.setFanDutyAuto(0);
+            this.setFanDutyAuto(1);
+            this.setFanDutyAuto(2);
+            this.setFanDutyAuto(3);
         }
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]

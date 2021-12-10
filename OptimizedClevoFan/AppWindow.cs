@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace OptimizedClevoFan
@@ -49,16 +43,16 @@ namespace OptimizedClevoFan
 
             fans = new List<FanControl>();
 
-            // 0   1   2   3   4   5   6   7   8   9  10  11  12  13  14   15  16
-            // 0   5  10  15  20  25  30  35  40  45  50  55  60  65  70   75  80
-            int[] temps1 = new int[] { 25, 25, 25, 25, 25, 25, 35, 40, 40, 40, 50, 60, 70, 80, 90, 100, 100 };
+                                     // 0   1   2   3   4   5   6   7   8   9  10  11  12  13  14   15  16
+                                     // 0   5  10  15  20  25  30  35  40  45  50  55  60  65  70   75  80
+            int[] temps1 = new int[] { 25, 25, 25, 25, 25, 25, 35, 40, 40, 40, 40, 50, 65, 80, 95, 100, 100 };
             FanControl fanControl1 = new FanControl(fanControl, 1);
             fanControl1.LoadTemps(temps1);
             fans.Add(fanControl1);
 
-            // 0   1   2   3   4   5   6   7   8   9  10  11  12  13   14   15   16
-            // 0   5  10  15  20  25  30  35  40  45  50  55  60  65   70   75   80
-            int[] temps2 = new int[] { 25, 25, 25, 25, 35, 35, 35, 35, 40, 50, 60, 70, 80, 90, 100, 100, 100 };
+                                     // 0   1   2   3   4   5   6   7   8   9  10  11  12  13   14   15   16
+                                     // 0   5  10  15  20  25  30  35  40  45  50  55  60  65   70   75   80
+            int[] temps2 = new int[] { 25, 25, 25, 25, 35, 35, 35, 35, 35, 45, 55, 70, 85, 100, 100, 100, 100 };
             FanControl fanControl2 = new FanControl(fanControl, 2);
             fanControl2.LoadTemps(temps2);
             fans.Add(fanControl2);
@@ -70,23 +64,31 @@ namespace OptimizedClevoFan
         {
             if (sender == timer)
             {
-                const int OFFSET = 25;
-
                 int maxOfAllFans = 0;
                 foreach (FanControl fan in this.fans)
                 {
-                    fan.UpdateTemp();
-                    fan.CalculateFanRPM(OFFSET);
-                    maxOfAllFans = Math.Max(maxOfAllFans, fan.GetCalculatedFanRPM());
+                    fan.UpdateAvgTemperature();
+                    fan.CalculateDesiredRPM(this.offsetTrackBar.Value);
+                    maxOfAllFans = Math.Max(maxOfAllFans, fan.GetDesiredRPM());
                 }
 
-                // if one of the fans is at more than 100% then I set all the fans at 100%
+                // set all fans to 80% of the one that is running faster (at more RPMs)
                 int minimumFanRPM = (int)((double)maxOfAllFans * 0.80);
+                // if one of the fans is at more than 100% then I set all the fans at 100%
                 if (maxOfAllFans >= 100)
                     minimumFanRPM = 100;
 
                 foreach (FanControl fan in this.fans)
                     fan.SetFanRPM(minimumFanRPM);
+
+
+                // LABELS
+                this.cpuTempLabel.Text = this.fans[0].GetTemperature().ToString() + "º C";
+                this.gpuTempLabel.Text = this.fans[1].GetTemperature().ToString() + "º C";
+
+                
+                this.cpuRpmLabel.Text = string.Format("{0:N2}% RPM", Math.Truncate(this.fans[0].GetLastRPM() * 10.0) / 10.0);
+                this.gpuRpmLabel.Text = string.Format("{0:N2}% RPM", Math.Truncate(this.fans[1].GetLastRPM() * 10.0) / 10.0);
             }
         }
 
@@ -108,6 +110,7 @@ namespace OptimizedClevoFan
                 fanControl.SetFansAuto(fan.GetFanNumber());
 
             // Delete interface for communicating with fans & CPU temps
+            fanControl.Dispose();
 
             this.SystemTrayIcon.Visible = false;
             Application.Exit();
@@ -118,6 +121,11 @@ namespace OptimizedClevoFan
         {
             e.Cancel = true;
             this.Hide();
+        }
+
+        private void offsetTrackBar_Scroll(object sender, EventArgs e)
+        {
+
         }
     }
 }

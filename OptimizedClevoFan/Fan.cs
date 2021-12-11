@@ -102,6 +102,8 @@ namespace OptimizedClevoFan
 
         public void SetFanRPM(int minimum_fan_rpm)
         {
+            double original_last_fan_rpm = Math.Truncate(this.last_fan_rpm * 10.0);
+
             int definitive_fan_rpm = this.desired_fan_rpm;
             if (this.desired_fan_rpm < minimum_fan_rpm)
                 definitive_fan_rpm = minimum_fan_rpm;
@@ -122,8 +124,9 @@ namespace OptimizedClevoFan
             if (this.last_fan_rpm < 0)
                 this.last_fan_rpm = 0;
 
-
-            fanControl?.SetFanSpeed(this.fanNumber, (int)this.last_fan_rpm);
+            // Only change fan speed if it has changed
+            if(original_last_fan_rpm != Math.Truncate(this.last_fan_rpm * 10.0))
+                fanControl?.SetFanSpeed(this.fanNumber, this.last_fan_rpm);
         }
 
     }

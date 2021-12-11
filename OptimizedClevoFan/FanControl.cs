@@ -39,7 +39,7 @@ namespace OptimizedClevoFan
             return getTempFanDuty(fanNr);
         }
 
-        public void SetFanSpeed(int fanNr, int fanSpeedPercentage) {
+        public void SetFanSpeed(int fanNr, double fanSpeedPercentage) {
 
             if (fanSpeedPercentage > 100)
                 fanSpeedPercentage = 100;
@@ -47,8 +47,8 @@ namespace OptimizedClevoFan
             if (fanSpeedPercentage < 0)
                 fanSpeedPercentage = 0;
 
-            int fanSpeed = fanSpeedPercentage * 255 / 100;
-            setFanDuty(fanNr, fanSpeed);
+            double fanSpeed = fanSpeedPercentage * 255.0 / 100.0;
+            setFanDuty(fanNr, (int)fanSpeed);
         }
 
         public void SetFansAuto(int fanNr) {

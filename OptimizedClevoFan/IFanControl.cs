@@ -6,7 +6,7 @@ namespace OptimizedClevoFan
 
         ECData2 GetECData(int fanNr);
 
-        void SetFanSpeed(int fanNr, int fanSpeedPercentage);
+        void SetFanSpeed(int fanNr, double fanSpeedPercentage);
 
         void SetFansAuto(int fanNr);
     }

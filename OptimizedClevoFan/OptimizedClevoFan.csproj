@@ -56,8 +56,8 @@
     <Compile Include="AppWindow.Designer.cs">
       <DependentUpon>AppWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="ClevoEcInfo.cs" />
     <Compile Include="FanControl.cs" />
+    <Compile Include="Fan.cs" />
     <Compile Include="IFanControl.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Program.cs" />

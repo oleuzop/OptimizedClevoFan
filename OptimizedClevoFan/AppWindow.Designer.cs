@@ -31,11 +31,16 @@
             this.components = new System.ComponentModel.Container();
             this.SystemTrayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.offsetTrackBar = new System.Windows.Forms.TrackBar();
-            this.cpuTempLabel = new System.Windows.Forms.Label();
-            this.gpuTempLabel = new System.Windows.Forms.Label();
-            this.cpuRpmLabel = new System.Windows.Forms.Label();
-            this.gpuRpmLabel = new System.Windows.Forms.Label();
+            this.offsetValue = new System.Windows.Forms.Label();
+            this.panelFanInfos = new System.Windows.Forms.FlowLayoutPanel();
+            this.groupBoxOffset = new System.Windows.Forms.GroupBox();
+            this.stepLbl = new System.Windows.Forms.Label();
+            this.groupBoxGeneralInfos = new System.Windows.Forms.GroupBox();
+            this.step = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.offsetTrackBar)).BeginInit();
+            this.groupBoxOffset.SuspendLayout();
+            this.groupBoxGeneralInfos.SuspendLayout();
             this.SuspendLayout();
             // 
             // SystemTrayIcon
@@ -46,65 +51,100 @@
             // 
             // offsetTrackBar
             // 
-            this.offsetTrackBar.Location = new System.Drawing.Point(12, 13);
+            this.offsetTrackBar.Location = new System.Drawing.Point(6, 24);
             this.offsetTrackBar.Maximum = 25;
             this.offsetTrackBar.Name = "offsetTrackBar";
             this.offsetTrackBar.Size = new System.Drawing.Size(260, 45);
             this.offsetTrackBar.TabIndex = 0;
+            this.offsetTrackBar.Scroll += new System.EventHandler(this.offsetTrackBar_Scroll);
             // 
-            // cpuTempLabel
+            // offsetValue
             // 
-            this.cpuTempLabel.AutoSize = true;
-            this.cpuTempLabel.Location = new System.Drawing.Point(12, 61);
-            this.cpuTempLabel.Name = "cpuTempLabel";
-            this.cpuTempLabel.Size = new System.Drawing.Size(35, 13);
-            this.cpuTempLabel.TabIndex = 1;
-            this.cpuTempLabel.Text = "label1";
+            this.offsetValue.AutoSize = true;
+            this.offsetValue.Location = new System.Drawing.Point(280, 28);
+            this.offsetValue.Name = "offsetValue";
+            this.offsetValue.Size = new System.Drawing.Size(24, 13);
+            this.offsetValue.TabIndex = 1;
+            this.offsetValue.Text = "0 %";
             // 
-            // gpuTempLabel
+            // panelFanInfos
             // 
-            this.gpuTempLabel.AutoSize = true;
-            this.gpuTempLabel.Location = new System.Drawing.Point(12, 88);
-            this.gpuTempLabel.Name = "gpuTempLabel";
-            this.gpuTempLabel.Size = new System.Drawing.Size(35, 13);
-            this.gpuTempLabel.TabIndex = 2;
-            this.gpuTempLabel.Text = "label1";
+            this.panelFanInfos.AutoScroll = true;
+            this.panelFanInfos.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.panelFanInfos.Location = new System.Drawing.Point(6, 93);
+            this.panelFanInfos.Name = "panelFanInfos";
+            this.panelFanInfos.Size = new System.Drawing.Size(542, 563);
+            this.panelFanInfos.TabIndex = 6;
+            this.panelFanInfos.WrapContents = false;
             // 
-            // cpuRpmLabel
+            // groupBoxOffset
             // 
-            this.cpuRpmLabel.AutoSize = true;
-            this.cpuRpmLabel.Location = new System.Drawing.Point(158, 61);
-            this.cpuRpmLabel.Name = "cpuRpmLabel";
-            this.cpuRpmLabel.Size = new System.Drawing.Size(35, 13);
-            this.cpuRpmLabel.TabIndex = 3;
-            this.cpuRpmLabel.Text = "label1";
+            this.groupBoxOffset.Controls.Add(this.offsetTrackBar);
+            this.groupBoxOffset.Controls.Add(this.offsetValue);
+            this.groupBoxOffset.Location = new System.Drawing.Point(13, 11);
+            this.groupBoxOffset.Name = "groupBoxOffset";
+            this.groupBoxOffset.Size = new System.Drawing.Size(331, 76);
+            this.groupBoxOffset.TabIndex = 7;
+            this.groupBoxOffset.TabStop = false;
+            this.groupBoxOffset.Text = "Fan Offset";
             // 
-            // gpuRpmLabel
+            // stepLbl
             // 
-            this.gpuRpmLabel.AutoSize = true;
-            this.gpuRpmLabel.Location = new System.Drawing.Point(158, 88);
-            this.gpuRpmLabel.Name = "gpuRpmLabel";
-            this.gpuRpmLabel.Size = new System.Drawing.Size(35, 13);
-            this.gpuRpmLabel.TabIndex = 4;
-            this.gpuRpmLabel.Text = "label1";
+            this.stepLbl.AutoSize = true;
+            this.stepLbl.Location = new System.Drawing.Point(13, 24);
+            this.stepLbl.Name = "stepLbl";
+            this.stepLbl.Size = new System.Drawing.Size(32, 13);
+            this.stepLbl.TabIndex = 8;
+            this.stepLbl.Text = "Step:";
+            // 
+            // groupBoxGeneralInfos
+            // 
+            this.groupBoxGeneralInfos.Controls.Add(this.step);
+            this.groupBoxGeneralInfos.Controls.Add(this.stepLbl);
+            this.groupBoxGeneralInfos.Location = new System.Drawing.Point(351, 11);
+            this.groupBoxGeneralInfos.Name = "groupBoxGeneralInfos";
+            this.groupBoxGeneralInfos.Size = new System.Drawing.Size(159, 76);
+            this.groupBoxGeneralInfos.TabIndex = 9;
+            this.groupBoxGeneralInfos.TabStop = false;
+            this.groupBoxGeneralInfos.Text = "General Info";
+            // 
+            // step
+            // 
+            this.step.AutoSize = true;
+            this.step.Location = new System.Drawing.Point(51, 24);
+            this.step.Name = "step";
+            this.step.Size = new System.Drawing.Size(41, 13);
+            this.step.TabIndex = 9;
+            this.step.Text = "250 ms";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(6, 662);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // AppWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Controls.Add(this.gpuRpmLabel);
-            this.Controls.Add(this.cpuRpmLabel);
-            this.Controls.Add(this.gpuTempLabel);
-            this.Controls.Add(this.cpuTempLabel);
-            this.Controls.Add(this.offsetTrackBar);
+            this.ClientSize = new System.Drawing.Size(553, 697);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.groupBoxGeneralInfos);
+            this.Controls.Add(this.groupBoxOffset);
+            this.Controls.Add(this.panelFanInfos);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AppWindow";
             ((System.ComponentModel.ISupportInitialize)(this.offsetTrackBar)).EndInit();
+            this.groupBoxOffset.ResumeLayout(false);
+            this.groupBoxOffset.PerformLayout();
+            this.groupBoxGeneralInfos.ResumeLayout(false);
+            this.groupBoxGeneralInfos.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -112,10 +152,13 @@
 
         private System.Windows.Forms.NotifyIcon SystemTrayIcon;
         private System.Windows.Forms.TrackBar offsetTrackBar;
-        private System.Windows.Forms.Label cpuTempLabel;
-        private System.Windows.Forms.Label gpuTempLabel;
-        private System.Windows.Forms.Label cpuRpmLabel;
-        private System.Windows.Forms.Label gpuRpmLabel;
+        private System.Windows.Forms.Label offsetValue;
+        private System.Windows.Forms.FlowLayoutPanel panelFanInfos;
+        private System.Windows.Forms.GroupBox groupBoxOffset;
+        private System.Windows.Forms.Label stepLbl;
+        private System.Windows.Forms.GroupBox groupBoxGeneralInfos;
+        private System.Windows.Forms.Label step;
+        private System.Windows.Forms.Button button1;
     }
 }
 

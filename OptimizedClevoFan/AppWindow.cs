@@ -12,6 +12,8 @@ namespace OptimizedClevoFan
 
         private FanController fanController;
 
+        private List<FanInfo> fanInfos;
+
         public AppWindow()
         {
             InitializeComponent();
@@ -42,6 +44,16 @@ namespace OptimizedClevoFan
             timer.Start();
 
             ///////////////////////////////////////////////////////////////////////////////////////////////
+            // Add infos
+            this.step.Text = this.fanController.updateFanStep.ToString() + " ms";
+
+            fanInfos = new List<FanInfo>();
+            foreach (Fan fan in this.fanController.fans)
+            {
+                FanInfo fanInfo = new FanInfo(fan);
+                this.panelFanInfos.Controls.Add(fanInfo);
+                this.fanInfos.Add(fanInfo);
+            }
         }
 
         public void CheckFansTick(object sender, EventArgs e)
@@ -50,13 +62,8 @@ namespace OptimizedClevoFan
             {
                 this.fanController.DoUpdate(this.offsetTrackBar.Value);
 
-                // LABELS
-                this.cpuTempLabel.Text = this.fanController.fans[0].GetTemperature().ToString() + " C";
-                this.gpuTempLabel.Text = this.fanController.fans[1].GetTemperature().ToString() + " C";
-
-
-                this.cpuRpmLabel.Text = string.Format("{0:N2}% RPM", Math.Truncate(this.fanController.fans[0].GetLastRPM() * 10.0) / 10.0);
-                this.gpuRpmLabel.Text = string.Format("{0:N2}% RPM", Math.Truncate(this.fanController.fans[1].GetLastRPM() * 10.0) / 10.0);
+                foreach( FanInfo fanInfo in this.fanInfos)
+                    fanInfo.UpdateInfos();
             }
         }
 
@@ -65,7 +72,11 @@ namespace OptimizedClevoFan
             if (this.Visible)
                 this.Hide();
             else
+            {
+                this.WindowState = FormWindowState.Minimized;
                 this.Show();
+                this.WindowState = FormWindowState.Normal;
+            }
         }
 
         private void ContextMenuExit(object sender, EventArgs e)
@@ -83,6 +94,11 @@ namespace OptimizedClevoFan
         {
             e.Cancel = true;
             this.Hide();
+        }
+
+        private void offsetTrackBar_Scroll(object sender, EventArgs e)
+        {
+            this.offsetValue.Text = this.offsetTrackBar.Value.ToString() + " %";
         }
     }
 }

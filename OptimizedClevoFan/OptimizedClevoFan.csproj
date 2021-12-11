@@ -59,7 +59,7 @@
     <Compile Include="AppWindow.Designer.cs">
       <DependentUpon>AppWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Configuration.cs" />
+    <Compile Include="FanController.cs" />
     <Compile Include="FanControl.cs" />
     <Compile Include="Fan.cs" />
     <Compile Include="IFanControl.cs" />

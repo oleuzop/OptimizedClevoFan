@@ -6,30 +6,31 @@ namespace OptimizedClevoFan
     public class Fan
     {
         private IFanControl fanControl;
-        private int fanNumber;
-        private int[] temps;
-
 
         private Queue<int> last_temperatures;
         private int avg_temperature;
-
         private int desired_fan_rpm;
         private double last_fan_rpm;
+        private int numberOfValuesForAvgTemperature;
 
         // PARAMS
-        private int NUMBER_OF_COUNTS = 4;
-        private double INCREMENT_STEP = 2.5;
-        private double DECREMENT_STEP = 0.1;
-        private int STEP_SIZE_IN_DEGREE_CELSIUS = 5;
+        public int fanNumber;
+        public string name;
+        public double rpmStepUp = 2.5;
+        public double rpmStepDown = 0.1;
+        public int degreesStepSize = 5;
+        public int[] temperatures;
 
-        public Fan(IFanControl fan, int fanNumber)
+        public Fan(IFanControl fan, int fanNumber, string name, int numberOfValuesForAvgTemperature)
         {
             this.fanControl = fan;
             this.fanNumber = fanNumber;
+            this.name = name;
+            this.numberOfValuesForAvgTemperature = numberOfValuesForAvgTemperature;
 
             this.avg_temperature = 40;
             this.last_temperatures = new Queue<int>();
-            this.desired_fan_rpm = 40;
+            this.desired_fan_rpm = 35;
             this.last_fan_rpm = (double)this.desired_fan_rpm;
         }
         public int GetFanNumber() { return fanNumber; }
@@ -42,7 +43,7 @@ namespace OptimizedClevoFan
 
         public void LoadTemps(int[] temps)
         {
-            this.temps = temps;
+            this.temperatures = temps;
         }
 
         public void UpdateAvgTemperature()
@@ -53,13 +54,13 @@ namespace OptimizedClevoFan
             // Get average temperature for the last steps
 
             last_temperatures.Enqueue(instant_temperature);
-            if (last_temperatures.Count > this.NUMBER_OF_COUNTS)
+            if (last_temperatures.Count > this.numberOfValuesForAvgTemperature)
                 last_temperatures.Dequeue();
 
             int cpu_temp_avg = 0;
             foreach (int temp in last_temperatures)
                 cpu_temp_avg += temp;
-            cpu_temp_avg /= this.NUMBER_OF_COUNTS;
+            cpu_temp_avg /= this.numberOfValuesForAvgTemperature;
 
             this.avg_temperature = cpu_temp_avg;
             // ----------------------------------------------------------------------------------------------------
@@ -67,32 +68,32 @@ namespace OptimizedClevoFan
 
         public void CalculateDesiredRPM(int offset)
         {
-            if (temps.Length == 0)
+            if (temperatures.Length == 0)
                 return;
 
             // ----------------------------------------------------------------------------------------------------
             // Ramp calculation
 
-            int vec_value_low = this.avg_temperature / this.STEP_SIZE_IN_DEGREE_CELSIUS;
-            if (vec_value_low >= temps.Length)
-                vec_value_low = temps.Length - 1;
+            int vec_value_low = this.avg_temperature / this.degreesStepSize;
+            if (vec_value_low >= temperatures.Length)
+                vec_value_low = temperatures.Length - 1;
             if (vec_value_low < 0)
                 vec_value_low = 0;
 
-            int vec_value_high = (this.avg_temperature / this.STEP_SIZE_IN_DEGREE_CELSIUS) + 1;
-            if (vec_value_high >= temps.Length)
-                vec_value_high = temps.Length - 1;
+            int vec_value_high = (this.avg_temperature / this.degreesStepSize) + 1;
+            if (vec_value_high >= temperatures.Length)
+                vec_value_high = temperatures.Length - 1;
             if (vec_value_high < 0)
                 vec_value_high = 0;
 
-            int temp_low = temps[vec_value_low];
-            int temp_high = temps[vec_value_high];
+            int temp_low = temperatures[vec_value_low];
+            int temp_high = temperatures[vec_value_high];
 
-            int extra_degrees = this.avg_temperature % this.STEP_SIZE_IN_DEGREE_CELSIUS;
-            double diff = (double)extra_degrees / (double)this.STEP_SIZE_IN_DEGREE_CELSIUS;
+            int extra_degrees = this.avg_temperature % this.degreesStepSize;
+            double diff = (double)extra_degrees / (double)this.degreesStepSize;
             diff *= (double)(temp_high - temp_low);
 
-            this.desired_fan_rpm = temps[vec_value_low] + (int)diff;
+            this.desired_fan_rpm = temperatures[vec_value_low] + (int)diff;
 
             // Add offset
             this.desired_fan_rpm += offset;
@@ -110,12 +111,12 @@ namespace OptimizedClevoFan
 
             if (definitive_fan_rpm >= this.last_fan_rpm)
             {
-                this.last_fan_rpm += this.INCREMENT_STEP;
+                this.last_fan_rpm += this.rpmStepUp;
             }
             else
             {
-                if ((this.last_fan_rpm - this.DECREMENT_STEP) > definitive_fan_rpm)
-                    this.last_fan_rpm -= this.DECREMENT_STEP;
+                if ((this.last_fan_rpm - this.rpmStepDown) > definitive_fan_rpm)
+                    this.last_fan_rpm -= this.rpmStepDown;
             }
 
             if (this.last_fan_rpm > 100)

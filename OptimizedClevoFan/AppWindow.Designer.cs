@@ -51,7 +51,6 @@
             this.offsetTrackBar.Name = "offsetTrackBar";
             this.offsetTrackBar.Size = new System.Drawing.Size(260, 45);
             this.offsetTrackBar.TabIndex = 0;
-            this.offsetTrackBar.Scroll += new System.EventHandler(this.offsetTrackBar_Scroll);
             // 
             // cpuTempLabel
             // 

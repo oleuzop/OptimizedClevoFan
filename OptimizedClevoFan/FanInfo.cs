@@ -21,7 +21,7 @@ namespace OptimizedClevoFan
             this.groupBox.Text = this.fan.name;
 
             // Sliders
-            for(int it = 0; it < this.fan.temperatures.Length; it++)
+            for(int it = 0; it < this.fan.configuredRPMs.Length; it++)
             {
                 this.temperatures.Controls.Add(new FanTemp(this.fan, it));
             }

@@ -38,6 +38,7 @@
             this.groupBoxGeneralInfos = new System.Windows.Forms.GroupBox();
             this.step = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.checkBoxStartWithWindows = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.offsetTrackBar)).BeginInit();
             this.groupBoxOffset.SuspendLayout();
             this.groupBoxGeneralInfos.SuspendLayout();
@@ -51,17 +52,18 @@
             // 
             // offsetTrackBar
             // 
-            this.offsetTrackBar.Location = new System.Drawing.Point(6, 24);
+            this.offsetTrackBar.AutoSize = false;
+            this.offsetTrackBar.Location = new System.Drawing.Point(6, 16);
             this.offsetTrackBar.Maximum = 25;
             this.offsetTrackBar.Name = "offsetTrackBar";
-            this.offsetTrackBar.Size = new System.Drawing.Size(260, 45);
+            this.offsetTrackBar.Size = new System.Drawing.Size(188, 34);
             this.offsetTrackBar.TabIndex = 0;
             this.offsetTrackBar.Scroll += new System.EventHandler(this.offsetTrackBar_Scroll);
             // 
             // offsetValue
             // 
             this.offsetValue.AutoSize = true;
-            this.offsetValue.Location = new System.Drawing.Point(280, 28);
+            this.offsetValue.Location = new System.Drawing.Point(195, 20);
             this.offsetValue.Name = "offsetValue";
             this.offsetValue.Size = new System.Drawing.Size(24, 13);
             this.offsetValue.TabIndex = 1;
@@ -81,17 +83,17 @@
             // 
             this.groupBoxOffset.Controls.Add(this.offsetTrackBar);
             this.groupBoxOffset.Controls.Add(this.offsetValue);
-            this.groupBoxOffset.Location = new System.Drawing.Point(13, 11);
+            this.groupBoxOffset.Location = new System.Drawing.Point(315, 10);
             this.groupBoxOffset.Name = "groupBoxOffset";
-            this.groupBoxOffset.Size = new System.Drawing.Size(331, 76);
+            this.groupBoxOffset.Size = new System.Drawing.Size(233, 59);
             this.groupBoxOffset.TabIndex = 7;
             this.groupBoxOffset.TabStop = false;
-            this.groupBoxOffset.Text = "Fan Offset";
+            this.groupBoxOffset.Text = "Fan extra RPM %";
             // 
             // stepLbl
             // 
             this.stepLbl.AutoSize = true;
-            this.stepLbl.Location = new System.Drawing.Point(13, 24);
+            this.stepLbl.Location = new System.Drawing.Point(7, 16);
             this.stepLbl.Name = "stepLbl";
             this.stepLbl.Size = new System.Drawing.Size(32, 13);
             this.stepLbl.TabIndex = 8;
@@ -101,9 +103,9 @@
             // 
             this.groupBoxGeneralInfos.Controls.Add(this.step);
             this.groupBoxGeneralInfos.Controls.Add(this.stepLbl);
-            this.groupBoxGeneralInfos.Location = new System.Drawing.Point(351, 11);
+            this.groupBoxGeneralInfos.Location = new System.Drawing.Point(6, 10);
             this.groupBoxGeneralInfos.Name = "groupBoxGeneralInfos";
-            this.groupBoxGeneralInfos.Size = new System.Drawing.Size(159, 76);
+            this.groupBoxGeneralInfos.Size = new System.Drawing.Size(303, 76);
             this.groupBoxGeneralInfos.TabIndex = 9;
             this.groupBoxGeneralInfos.TabStop = false;
             this.groupBoxGeneralInfos.Text = "General Info";
@@ -111,7 +113,7 @@
             // step
             // 
             this.step.AutoSize = true;
-            this.step.Location = new System.Drawing.Point(51, 24);
+            this.step.Location = new System.Drawing.Point(45, 16);
             this.step.Name = "step";
             this.step.Size = new System.Drawing.Size(41, 13);
             this.step.TabIndex = 9;
@@ -126,11 +128,24 @@
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
             // 
+            // checkBoxStartWithWindows
+            // 
+            this.checkBoxStartWithWindows.AutoSize = true;
+            this.checkBoxStartWithWindows.Location = new System.Drawing.Point(431, 73);
+            this.checkBoxStartWithWindows.Margin = new System.Windows.Forms.Padding(0);
+            this.checkBoxStartWithWindows.Name = "checkBoxStartWithWindows";
+            this.checkBoxStartWithWindows.Size = new System.Drawing.Size(117, 17);
+            this.checkBoxStartWithWindows.TabIndex = 10;
+            this.checkBoxStartWithWindows.Text = "Start with Windows";
+            this.checkBoxStartWithWindows.UseVisualStyleBackColor = true;
+            this.checkBoxStartWithWindows.CheckedChanged += new System.EventHandler(this.checkBoxStartWithWindows_CheckedChanged);
+            // 
             // AppWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(553, 697);
+            this.Controls.Add(this.checkBoxStartWithWindows);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBoxGeneralInfos);
             this.Controls.Add(this.groupBoxOffset);
@@ -145,6 +160,7 @@
             this.groupBoxGeneralInfos.ResumeLayout(false);
             this.groupBoxGeneralInfos.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -159,6 +175,7 @@
         private System.Windows.Forms.GroupBox groupBoxGeneralInfos;
         private System.Windows.Forms.Label step;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox checkBoxStartWithWindows;
     }
 }
 

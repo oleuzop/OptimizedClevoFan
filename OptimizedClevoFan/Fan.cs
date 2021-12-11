@@ -24,7 +24,7 @@ namespace OptimizedClevoFan
         public double rpmStepUp = 2.5;
         public double rpmStepDown = 0.1;
         public int degreesStepSize = 5;
-        public int[] temperatures;
+        public int[] configuredRPMs;
 
         public Fan(IFanControl fan, int fanNumber, string name, int numberOfValuesForAvgTemperature)
         {
@@ -33,12 +33,12 @@ namespace OptimizedClevoFan
             this.name = name;
             this.numberOfValuesForAvgTemperature = numberOfValuesForAvgTemperature;
 
-            this.instant_temperature = 30;
+            this.instant_temperature = 50;
             this.max_temperature = this.instant_temperature;
             this.avg_temperature = this.instant_temperature;
             this.number_of_avg_records = 1;
             this.last_temperatures = new Queue<int>();
-            this.desired_fan_rpm = 35;
+            this.desired_fan_rpm = 50;
             this.last_fan_rpm = (double)this.desired_fan_rpm;
         }
         public int GetFanNumber() { return fanNumber; }
@@ -49,17 +49,17 @@ namespace OptimizedClevoFan
 
         public int GetTemperature() { return this.instant_temperature; }
 
-        public int GetConfiguredTemp(int position) { return this.temperatures[position]; }
+        public int GetConfiguredRPMAtStep(int stepPosition) { return this.configuredRPMs[stepPosition]; }
 
-        public void SetConfiguredTemp(int position, int value) 
+        public void SetConfiguredRPMAtStep(int stepPosition, int rpmValue) 
         {
-            if(value < 0)
-                value = 0;
+            if(rpmValue < 0)
+                rpmValue = 0;
 
-            if (value > 100)
-                value = 100;
+            if (rpmValue > 100)
+                rpmValue = 100;
 
-            this.temperatures[position] = value;
+            this.configuredRPMs[stepPosition] = rpmValue;
         }
 
         public int GetAvgTemperature() { return (int)this.avg_temperature; }
@@ -68,7 +68,7 @@ namespace OptimizedClevoFan
 
         public void LoadTemps(int[] temps)
         {
-            this.temperatures = temps;
+            this.configuredRPMs = temps;
         }
 
         public void UpdateAvgTemperature()
@@ -106,32 +106,32 @@ namespace OptimizedClevoFan
 
         public void CalculateDesiredRPM(int offset)
         {
-            if (temperatures.Length == 0)
+            if (configuredRPMs.Length == 0)
                 return;
 
             // ----------------------------------------------------------------------------------------------------
             // Ramp calculation
 
             int vec_value_low = this.instant_temperature / this.degreesStepSize;
-            if (vec_value_low >= temperatures.Length)
-                vec_value_low = temperatures.Length - 1;
+            if (vec_value_low >= configuredRPMs.Length)
+                vec_value_low = configuredRPMs.Length - 1;
             if (vec_value_low < 0)
                 vec_value_low = 0;
 
             int vec_value_high = (this.instant_temperature / this.degreesStepSize) + 1;
-            if (vec_value_high >= temperatures.Length)
-                vec_value_high = temperatures.Length - 1;
+            if (vec_value_high >= configuredRPMs.Length)
+                vec_value_high = configuredRPMs.Length - 1;
             if (vec_value_high < 0)
                 vec_value_high = 0;
 
-            int temp_low = temperatures[vec_value_low];
-            int temp_high = temperatures[vec_value_high];
+            int temp_low = configuredRPMs[vec_value_low];
+            int temp_high = configuredRPMs[vec_value_high];
 
             int extra_degrees = this.instant_temperature % this.degreesStepSize;
             double diff = (double)extra_degrees / (double)this.degreesStepSize;
             diff *= (double)(temp_high - temp_low);
 
-            this.desired_fan_rpm = temperatures[vec_value_low] + (int)diff;
+            this.desired_fan_rpm = configuredRPMs[vec_value_low] + (int)diff;
 
             // Add offset
             this.desired_fan_rpm += offset;

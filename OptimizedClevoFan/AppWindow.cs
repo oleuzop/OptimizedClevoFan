@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -6,6 +7,10 @@ namespace OptimizedClevoFan
 {
     public partial class AppWindow : Form
     {
+        // The path to the key where Windows looks for startup applications
+        RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+        const string APP_NAME = "OptimizedClevoFan";
+
         private FanController configuration = new FanController();
 
         private Timer timer;
@@ -17,13 +22,13 @@ namespace OptimizedClevoFan
         public AppWindow()
         {
             InitializeComponent();
-            this.CenterToScreen();
+            this.Hide();
 
             this.Icon = Properties.Resources.Default;
             this.SystemTrayIcon.Icon = Properties.Resources.Default;
 
-            // Change the Text property to the name of your application
-            this.SystemTrayIcon.Text = "Optimized Clevo Fan";
+            this.Text = "Optimized Clevo Fan";
+            this.SystemTrayIcon.Text = this.Text;
             this.SystemTrayIcon.Visible = true;
 
             // Modify the right-click menu of your system tray icon here
@@ -35,6 +40,19 @@ namespace OptimizedClevoFan
 
             ///////////////////////////////////////////////////////////////////////////////////////////////
             
+            // Check to see the current state (running at startup or not)
+            if (rkApp.GetValue(APP_NAME) == null)
+                checkBoxStartWithWindows.Checked = false;
+            else
+            {
+                checkBoxStartWithWindows.Checked = true;
+
+                // sleep during 20 seconds so it lets Clevo Control Center start...
+                // Kinda horrible solution, but it works in my case
+                System.Threading.Thread.Sleep(20000);
+            }
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////
             // Create & init fan controller
             this.fanController = new FanController();
 
@@ -75,6 +93,7 @@ namespace OptimizedClevoFan
             {
                 this.WindowState = FormWindowState.Minimized;
                 this.Show();
+                this.CenterToScreen();
                 this.WindowState = FormWindowState.Normal;
             }
         }
@@ -99,6 +118,14 @@ namespace OptimizedClevoFan
         private void offsetTrackBar_Scroll(object sender, EventArgs e)
         {
             this.offsetValue.Text = this.offsetTrackBar.Value.ToString() + " %";
+        }
+
+        private void checkBoxStartWithWindows_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxStartWithWindows.Checked)
+                rkApp.SetValue(APP_NAME, Application.ExecutablePath);
+            else
+                rkApp.DeleteValue(APP_NAME, false);
         }
     }
 }

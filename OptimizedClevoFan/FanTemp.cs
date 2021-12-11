@@ -16,14 +16,14 @@ namespace OptimizedClevoFan
 
             this.tempLbl.Text = (this.temperatureRange * this.fan.degreesStepSize).ToString() + " C";
 
-            int rpm = this.fan.GetConfiguredTemp(this.temperatureRange);
+            int rpm = this.fan.GetConfiguredRPMAtStep(this.temperatureRange);
             this.tempTrackBar.Value = rpm;
             this.rpmLbl.Text = rpm.ToString() + " %";
         }
 
         private void tempTrackBar_Scroll(object sender, EventArgs e)
         {
-            this.fan.SetConfiguredTemp(this.temperatureRange, this.tempTrackBar.Value);
+            this.fan.SetConfiguredRPMAtStep(this.temperatureRange, this.tempTrackBar.Value);
             this.rpmLbl.Text = this.tempTrackBar.Value.ToString() + " %";
         }
     }

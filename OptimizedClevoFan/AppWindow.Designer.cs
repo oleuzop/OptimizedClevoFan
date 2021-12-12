@@ -39,6 +39,7 @@
             this.step = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.checkBoxStartWithWindows = new System.Windows.Forms.CheckBox();
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.offsetTrackBar)).BeginInit();
             this.groupBoxOffset.SuspendLayout();
             this.groupBoxGeneralInfos.SuspendLayout();
@@ -75,7 +76,7 @@
             this.panelFanInfos.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.panelFanInfos.Location = new System.Drawing.Point(6, 93);
             this.panelFanInfos.Name = "panelFanInfos";
-            this.panelFanInfos.Size = new System.Drawing.Size(542, 563);
+            this.panelFanInfos.Size = new System.Drawing.Size(542, 523);
             this.panelFanInfos.TabIndex = 6;
             this.panelFanInfos.WrapContents = false;
             // 
@@ -83,9 +84,9 @@
             // 
             this.groupBoxOffset.Controls.Add(this.offsetTrackBar);
             this.groupBoxOffset.Controls.Add(this.offsetValue);
-            this.groupBoxOffset.Location = new System.Drawing.Point(315, 10);
+            this.groupBoxOffset.Location = new System.Drawing.Point(290, 10);
             this.groupBoxOffset.Name = "groupBoxOffset";
-            this.groupBoxOffset.Size = new System.Drawing.Size(233, 59);
+            this.groupBoxOffset.Size = new System.Drawing.Size(233, 56);
             this.groupBoxOffset.TabIndex = 7;
             this.groupBoxOffset.TabStop = false;
             this.groupBoxOffset.Text = "Fan extra RPM %";
@@ -103,9 +104,9 @@
             // 
             this.groupBoxGeneralInfos.Controls.Add(this.step);
             this.groupBoxGeneralInfos.Controls.Add(this.stepLbl);
-            this.groupBoxGeneralInfos.Location = new System.Drawing.Point(6, 10);
+            this.groupBoxGeneralInfos.Location = new System.Drawing.Point(12, 10);
             this.groupBoxGeneralInfos.Name = "groupBoxGeneralInfos";
-            this.groupBoxGeneralInfos.Size = new System.Drawing.Size(303, 76);
+            this.groupBoxGeneralInfos.Size = new System.Drawing.Size(275, 76);
             this.groupBoxGeneralInfos.TabIndex = 9;
             this.groupBoxGeneralInfos.TabStop = false;
             this.groupBoxGeneralInfos.Text = "General Info";
@@ -121,17 +122,17 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(6, 662);
+            this.button1.Location = new System.Drawing.Point(12, 622);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(135, 23);
             this.button1.TabIndex = 10;
-            this.button1.Text = "button1";
+            this.button1.Text = "Save Configuration";
             this.button1.UseVisualStyleBackColor = true;
             // 
             // checkBoxStartWithWindows
             // 
             this.checkBoxStartWithWindows.AutoSize = true;
-            this.checkBoxStartWithWindows.Location = new System.Drawing.Point(431, 73);
+            this.checkBoxStartWithWindows.Location = new System.Drawing.Point(290, 69);
             this.checkBoxStartWithWindows.Margin = new System.Windows.Forms.Padding(0);
             this.checkBoxStartWithWindows.Name = "checkBoxStartWithWindows";
             this.checkBoxStartWithWindows.Size = new System.Drawing.Size(117, 17);
@@ -140,11 +141,21 @@
             this.checkBoxStartWithWindows.UseVisualStyleBackColor = true;
             this.checkBoxStartWithWindows.CheckedChanged += new System.EventHandler(this.checkBoxStartWithWindows_CheckedChanged);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(388, 622);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(135, 23);
+            this.button2.TabIndex = 11;
+            this.button2.Text = "Exit";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
             // AppWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(553, 697);
+            this.ClientSize = new System.Drawing.Size(553, 653);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.checkBoxStartWithWindows);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBoxGeneralInfos);
@@ -176,6 +187,7 @@
         private System.Windows.Forms.Label step;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox checkBoxStartWithWindows;
+        private System.Windows.Forms.Button button2;
     }
 }
 

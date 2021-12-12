@@ -104,7 +104,7 @@ namespace OptimizedClevoFan
             {
                 this.WindowState = FormWindowState.Minimized;
                 this.Show();
-                this.CenterToScreen();
+                //this.CenterToScreen();
                 this.WindowState = FormWindowState.Normal;
             }
         }
@@ -113,7 +113,7 @@ namespace OptimizedClevoFan
         {
             timer.Stop();
 
-            this.fanController.SaveConfiguration(Application.ExecutablePath + "configuration.json");            
+            this.fanController.SaveConfiguration(AppDomain.CurrentDomain.BaseDirectory + "configuration.json");            
 
             this.fanController.Finish();
 

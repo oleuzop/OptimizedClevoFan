@@ -33,12 +33,12 @@ namespace OptimizedClevoFan
             this.name = name;
             this.numberOfValuesForAvgTemperature = numberOfValuesForAvgTemperature;
 
-            this.instant_temperature = 50;
+            this.instant_temperature = 0;
             this.max_temperature = this.instant_temperature;
             this.avg_temperature = this.instant_temperature;
             this.number_of_avg_records = 1;
             this.last_temperatures = new Queue<int>();
-            this.desired_fan_rpm = 50;
+            this.desired_fan_rpm = 25;
             this.last_fan_rpm = (double)this.desired_fan_rpm;
         }
         public int GetFanNumber() { return fanNumber; }

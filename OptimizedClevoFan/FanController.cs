@@ -20,10 +20,9 @@ namespace OptimizedClevoFan
 
             // List containing all fans
             this.fans = new List<Fan>();
-
-            // load from file or set default values
-
-            /*
+        }
+        public void LoadDefaults()
+        {
             // Default values
             this.updateFanStep = 250;
             this.numberOfValuesForAvgTemperature = 4;
@@ -43,7 +42,6 @@ namespace OptimizedClevoFan
             Fan fanControl2 = new Fan(fanControl, 2, "GPU", this.numberOfValuesForAvgTemperature);
             fanControl2.LoadTemps(temps2);
             this.fans.Add(fanControl2);
-            */
         }
 
         public IFanControl GetFanControl() 

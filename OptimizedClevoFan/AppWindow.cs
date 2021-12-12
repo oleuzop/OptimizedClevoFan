@@ -79,10 +79,15 @@ namespace OptimizedClevoFan
 
             ///////////////////////////////////////////////////////////////////////////////////////////////
             // Create & init fan controller
-            this.fanController = this.LoadConfiguration();
-
-            //Load default configuration
-            //this.fanController = new FanController();
+            try
+            {
+                this.fanController = this.LoadConfiguration();
+            }
+            catch (Exception ex)
+            {
+                this.fanController = new FanController();
+                this.fanController.LoadDefaults();
+            }
 
             // Create timer for updating fan RPMs and so on
             timer = new Timer { Interval = fanController.updateFanStep };
@@ -136,25 +141,6 @@ namespace OptimizedClevoFan
             }
         }
 
-        private void ContextMenuExit(object sender, EventArgs e)
-        {
-            timer.Stop();
-
-            //this.SaveConfiguration(this.fanController);            
-
-            this.fanController.Finish();
-
-            this.SystemTrayIcon.Visible = false;
-            Application.Exit();
-            Environment.Exit(0);
-        }
-
-        private void WindowClosing(object sender, FormClosingEventArgs e)
-        {
-            e.Cancel = true;
-            this.Hide();
-        }
-
         private void offsetTrackBar_Scroll(object sender, EventArgs e)
         {
             this.offsetValue.Text = this.offsetTrackBar.Value.ToString() + " %";
@@ -166,6 +152,43 @@ namespace OptimizedClevoFan
                 rkApp.SetValue(APP_NAME, Application.ExecutablePath);
             else
                 rkApp.DeleteValue(APP_NAME, false);
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            this.SaveConfiguration(this.fanController);
+        }
+
+        private void ExitApplication()
+        {
+            timer.Stop();
+
+            this.fanController.Finish();
+
+            this.SystemTrayIcon.Visible = false;
+            Application.Exit();
+            Environment.Exit(0);
+        }
+
+        private void buttonExit_Click(object sender, EventArgs e)
+        {
+            ExitApplication();
+        }
+
+        private void ContextMenuExit(object sender, EventArgs e)
+        {
+            ExitApplication();
+        }
+
+        private void WindowClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
+        }
+
+        private void buttonClose_Click(object sender, EventArgs e)
+        {
+            this.Hide();
         }
     }
 }

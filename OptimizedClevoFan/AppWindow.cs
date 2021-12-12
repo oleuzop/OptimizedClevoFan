@@ -19,10 +19,11 @@ namespace OptimizedClevoFan
 
         private List<FanInfo> fanInfos;
 
+        private bool firstRun = true;
+
         public AppWindow()
         {
             InitializeComponent();
-            this.Hide();
 
             this.Icon = Properties.Resources.Default;
             this.SystemTrayIcon.Icon = Properties.Resources.Default;
@@ -49,7 +50,7 @@ namespace OptimizedClevoFan
 
                 // sleep during 20 seconds so it lets Clevo Control Center start...
                 // Kinda horrible solution, but it works in my case
-                System.Threading.Thread.Sleep(20000);
+                //System.Threading.Thread.Sleep(20000);
             }
 
             ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -72,12 +73,22 @@ namespace OptimizedClevoFan
                 this.panelFanInfos.Controls.Add(fanInfo);
                 this.fanInfos.Add(fanInfo);
             }
+
+            // Start minimized
+            this.WindowState = FormWindowState.Minimized;
         }
 
         public void CheckFansTick(object sender, EventArgs e)
         {
             if (sender == timer)
             {
+                // Ugly trick to start minimized in task tray
+                if (firstRun)
+                {
+                    this.Hide();
+                    firstRun = false;
+                }
+
                 this.fanController.DoUpdate(this.offsetTrackBar.Value);
 
                 foreach( FanInfo fanInfo in this.fanInfos)
@@ -101,6 +112,8 @@ namespace OptimizedClevoFan
         private void ContextMenuExit(object sender, EventArgs e)
         {
             timer.Stop();
+
+            this.fanController.SaveConfiguration(Application.ExecutablePath + "configuration.json");            
 
             this.fanController.Finish();
 

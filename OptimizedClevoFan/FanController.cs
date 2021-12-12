@@ -46,9 +46,9 @@ namespace OptimizedClevoFan
             fanControl2.LoadTemps(temps2);
             this.fans.Add(fanControl2);
         }
-        private void SaveConfiguration()
+        public void SaveConfiguration(string filePath)
         {
-            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "OptimizedClevoFanConfiguration.json");
+            //string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "OptimizedClevoFanConfiguration.json");
             JsonSerializer serializer = new JsonSerializer();
             using (StreamWriter sw = new StreamWriter(filePath))
             using (JsonWriter writer = new JsonTextWriter(sw))
@@ -79,9 +79,6 @@ namespace OptimizedClevoFan
 
         public void Finish()
         {
-            // TODO
-            this.SaveConfiguration();
-
             // Set default fan RPMs
             foreach (Fan fan in this.fans)
                 fanControl.SetFansAuto(fan.GetFanNumber());

@@ -1,10 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OptimizedClevoFan
 {
@@ -28,10 +23,12 @@ namespace OptimizedClevoFan
 
             // load from file or set default values
 
+            /*
             // Default values
             this.updateFanStep = 250;
             this.numberOfValuesForAvgTemperature = 4;
-
+            
+            
                                      // 0   1   2   3   4   5   6   7   8   9  10  11  12  13  14   15  16
                                      // 0   5  10  15  20  25  30  35  40  45  50  55  60  65  70   75  80
             int[] temps1 = new int[] { 25, 25, 25, 25, 25, 30, 35, 35, 35, 35, 35, 35, 40, 70, 95, 100, 100, 100, 100, 100, 100 };
@@ -46,25 +43,12 @@ namespace OptimizedClevoFan
             Fan fanControl2 = new Fan(fanControl, 2, "GPU", this.numberOfValuesForAvgTemperature);
             fanControl2.LoadTemps(temps2);
             this.fans.Add(fanControl2);
-        }
-        public void LoadConfiguration(string filePath)
-        {
-            JsonSerializer serializer = new JsonSerializer();
-            using (StreamWriter sw = new StreamWriter(filePath))
-            using (JsonWriter writer = new JsonTextWriter(sw))
-            {
-                serializer.Serialize(writer, this);
-            }
+            */
         }
 
-        public void SaveConfiguration(string filePath)
+        public IFanControl GetFanControl() 
         {
-            JsonSerializer serializer = new JsonSerializer();
-            using (StreamWriter sw = new StreamWriter(filePath))
-            using (JsonWriter writer = new JsonTextWriter(sw))
-            {
-                serializer.Serialize(writer, this);
-            }
+            return this.fanControl;
         }
 
         public void DoUpdate(int offset)

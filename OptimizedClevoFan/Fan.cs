@@ -26,9 +26,9 @@ namespace OptimizedClevoFan
         public int degreesStepSize = 5;
         public int[] configuredRPMs;
 
-        public Fan(IFanControl fan, int fanNumber, string name, int numberOfValuesForAvgTemperature)
+        public Fan(IFanControl fanControl, int fanNumber, string name, int numberOfValuesForAvgTemperature)
         {
-            this.fanControl = fan;
+            this.fanControl = fanControl;
             this.fanNumber = fanNumber;
             this.name = name;
             this.numberOfValuesForAvgTemperature = numberOfValuesForAvgTemperature;
@@ -41,6 +41,17 @@ namespace OptimizedClevoFan
             this.desired_fan_rpm = 25;
             this.last_fan_rpm = (double)this.desired_fan_rpm;
         }
+
+        public void SetFanControl(IFanControl fanControl)
+        {
+            this.fanControl = fanControl;
+        }
+
+        public void SetNumberOfValuesForAvgTemperature(int numberOfValuesForAvgTemperature)
+        {
+            this.numberOfValuesForAvgTemperature = numberOfValuesForAvgTemperature;
+        }
+
         public int GetFanNumber() { return fanNumber; }
 
         public int GetDesiredRPM() { return this.desired_fan_rpm; }

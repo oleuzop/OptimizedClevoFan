@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace OptimizedClevoFan
 {
@@ -11,8 +13,6 @@ namespace OptimizedClevoFan
         RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
         const string APP_NAME = "OptimizedClevoFan";
 
-        private FanController configuration = new FanController();
-
         private Timer timer;
 
         private FanController fanController;
@@ -20,6 +20,30 @@ namespace OptimizedClevoFan
         private List<FanInfo> fanInfos;
 
         private bool firstRun = true;
+
+        private FanController LoadConfiguration()
+        {
+            string confJson = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "configuration.json");
+            FanController fanController = JsonConvert.DeserializeObject<FanController>(confJson);
+
+            foreach( Fan fan in fanController.fans)
+            {
+                fan.SetFanControl(fanController.GetFanControl());
+                fan.SetNumberOfValuesForAvgTemperature(fanController.numberOfValuesForAvgTemperature);
+            }
+
+            return fanController;
+        }
+
+        private void SaveConfiguration(FanController fanController)
+        {
+            JsonSerializer serializer = new JsonSerializer();
+            using (StreamWriter sw = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "configuration.json"))
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(writer, fanController);
+            }
+        }
 
         public AppWindow()
         {
@@ -55,7 +79,10 @@ namespace OptimizedClevoFan
 
             ///////////////////////////////////////////////////////////////////////////////////////////////
             // Create & init fan controller
-            this.fanController = new FanController();
+            this.fanController = this.LoadConfiguration();
+
+            //Load default configuration
+            //this.fanController = new FanController();
 
             // Create timer for updating fan RPMs and so on
             timer = new Timer { Interval = fanController.updateFanStep };
@@ -113,7 +140,7 @@ namespace OptimizedClevoFan
         {
             timer.Stop();
 
-            this.fanController.SaveConfiguration(AppDomain.CurrentDomain.BaseDirectory + "configuration.json");            
+            //this.SaveConfiguration(this.fanController);            
 
             this.fanController.Finish();
 
